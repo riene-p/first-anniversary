@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import random
 import os
 import json
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 
 # -------------------------
 # App Setup
@@ -17,12 +17,14 @@ PASSWORD = "24/02/2025"   # <<< CHANGE THIS TO YOUR PASSWORD
 # -------------------------
 # Google Sheets Setup
 # -------------------------
-scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+# Scopes for Google Sheets and Drive
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets",
+          "https://www.googleapis.com/auth/drive"]
 
 creds_json = os.environ.get("GOOGLE_CREDS")
 creds_dict = json.loads(creds_json)
-creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 
+creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
 client = gspread.authorize(creds)
 
 sheet = client.open("100ReasonsWhyBase")
