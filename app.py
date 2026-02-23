@@ -1,6 +1,9 @@
 import gspread
 from flask import Flask, render_template, request, redirect, url_for, session
 import random
+import os
+import json
+from oauth2client.service_account import ServiceAccountCredentials
 
 # -------------------------
 # App Setup
@@ -14,8 +17,13 @@ PASSWORD = "24/02/2025"   # <<< CHANGE THIS TO YOUR PASSWORD
 # -------------------------
 # Google Sheets Setup
 # -------------------------
+scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
 
-client = gspread.service_account(filename="credentials.json")
+creds_json = os.environ.get("GOOGLE_CREDS")
+creds_dict = json.loads(creds_json)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+
+client = gspread.authorize(creds)
 
 sheet = client.open("100ReasonsWhyBase")
 messages_ws = sheet.worksheet("messages")
