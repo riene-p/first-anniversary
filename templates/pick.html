@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Anniversary! 🌸</title>
+<style>
+@font-face {
+    font-family: "myFont";
+    src: url("{{ url_for('static', filename='fonts/myFont.ttf') }}") format("truetype");
+}
+
+form {
+    margin-bottom: 40px; 
+}
+
+body {
+    font-family: "myFont", sans-serif;
+    font-size: 40px;
+    background: linear-gradient(135deg, #fcecff, #e8faff);
+    color: #444;
+    text-align: center;
+    padding: 40px;
+}
+
+h1 {
+    color: #ff69b4;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+button {
+    font-family: "myFont", sans-serif;
+    background: #ffb6c1;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: #ff99aa;
+    transform: scale(1.05);
+}
+
+.messages-left {
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff0f5;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    font-size: 30px;
+    color: #d63384;
+    animation: pop 0.4s ease;
+    z-index: 1000;
+    font-family: "myFont", sans-serif;
+    text-align: center;
+    max-width: 500px;
+    word-wrap: break-word;
+}
+
+@keyframes pop {
+  0% { transform: translate(-50%, -50%) scale(0.7); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+</head>
+<body>
+<div class="main-container">
+<h1>helloooo my dear :3</h1>
+
+<form id="pick-form" method="POST" action="/pick">
+    <button type="submit">click me!!</button>
+</form>
+
+{% if messages_left == 0 %}
+<form id="reset-button-form" method="POST" action="/reset">
+    <button type="submit" id="reset-button">surprise :D</button>
+</form>
+{% endif %}
+
+<p class="messages-left">{{ messages_left }} more reasons why i love you 💖</p>
+
+<!-- Normal message popup -->
+<div id="popup" class="popup">
+    <span id="popup-message"></span><br>
+    <button id="close-popup">x</button>
+</div>
+
+<!-- Pre-reset popup -->
+{% if show_reload_popup %}
+<div id="reload-popup" class="popup">
+    <span>happy one year anniversary darling. i love you so so SO much  </span><br>
+    <button id="close-reload">x</button>
+</div>
+<form id="do-reset-form" method="POST" action="/do_reset" style="display:none;"></form>
+{% endif %}
+
+<!-- Post-reset confirmation popup -->
+<div id="popup-reset" class="popup">
+    <span>reset complete!</span><br>
+    <button id="close-reset">x</button>
+</div>
+
+<script>
+const popup = document.getElementById("popup");
+const popupMessage = document.getElementById("popup-message");
+const closePopup = document.getElementById("close-popup");
+
+const popupReset = document.getElementById("popup-reset");
+const closeReset = document.getElementById("close-reset");
+
+const reloadPopup = document.getElementById("reload-popup");
+const closeReload = document.getElementById("close-reload");
+const doResetForm = document.getElementById("do-reset-form");
+
+// Normal message popup
+closePopup?.addEventListener("click", () => popup.style.display = "none");
+{% if message %}
+    popupMessage.innerText = "💌 {{ message }}";
+    popup.style.display = "block";
+{% endif %}
+
+// Post-reset popup
+closeReset?.addEventListener("click", () => popupReset.style.display = "none");
+{% if popup_reset %}
+    popupReset.style.display = "block";
+{% endif %}
+
+// Pre-reset popup
+{% if show_reload_popup %}
+    reloadPopup.style.display = "block";
+{% endif %}
+
+closeReload?.addEventListener("click", () => {
+    reloadPopup.style.display = "none";
+    doResetForm.submit();
+});
+</script>
+</body>
+</html>

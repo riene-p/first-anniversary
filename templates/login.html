@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login 🌸</title>
+
+<style>
+@font-face {
+    font-family: "myFont";
+    src: url("{{ url_for('static', filename='fonts/myFont.ttf') }}") format("truetype");
+}
+
+body {
+    font-family: "myFont", sans-serif;
+    font-size: 40px;
+    background: linear-gradient(135deg, #fcecff, #e8faff);
+    color: #444;
+    text-align: center;
+    padding: 40px;
+}
+
+h1 {
+    color: #ff69b4;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.hint {
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: #d63384;
+}
+
+input {
+    font-family: "myFont", sans-serif;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: 2px solid #ffb6c1;
+    font-size: 30px;
+    text-align: center;
+    outline: none;
+}
+
+button {
+    font-family: "myFont", sans-serif;
+    background: #ffb6c1;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background: #ff99aa;
+    transform: scale(1.05);
+}
+
+.error {
+    color: red;
+    margin-top: 20px;
+    font-size: 25px;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="main-container">
+
+<h1>i justt need to verify something ^^<h1>
+
+<div class="hint">
+    hint! dd/mm/yyyy
+</div>
+
+<form method="POST">
+    <input type="password" name="password" placeholder="enter password..." required>
+    <br>
+    <button type="submit">unlock 💌</button>
+</form>
+
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+
+</div>
+
+</body>
+</html>
